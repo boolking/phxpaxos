@@ -272,14 +272,16 @@
             '<(leveldb_win_dir)/util/win_logger.cc',
           ],
         }, {
+          'cflags': ['-fno-builtin-memcmp'],
           'defines': [
             'OS_LINUX',
-            'LEVELDB_PLATFORM_POSIX'
+            'LEVELDB_PLATFORM_POSIX',
+            'LEVELDB_ATOMIC_PRESENT',
           ],
           'sources': [
-            '<(leveldb_source_dir)/util/env_posix.cc',
             '<(leveldb_source_dir)/port/port_posix.h',
             '<(leveldb_source_dir)/port/port_posix.cc',
+            '<(leveldb_source_dir)/util/env_posix.cc',
             '<(leveldb_source_dir)/util/posix_logger.h',
           ],
         }],
