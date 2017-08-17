@@ -55,6 +55,8 @@ public:
 
     void detach();
 
+    std::thread::id getId() const;
+
     virtual void run() = 0;
 
     static void sleep(int ms);

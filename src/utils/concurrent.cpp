@@ -39,7 +39,7 @@ Thread::Thread() {}
 Thread::~Thread() {}
 
 void Thread::start() {
-    _thread = std::move(std::thread(std::bind(&mmThreadRun, this)));
+    _thread = std::thread(std::bind(&mmThreadRun, this));
 }
 
 
@@ -51,6 +51,9 @@ void Thread::detach() {
     _thread.detach();
 }
 
+std::thread::id Thread::getId() const {
+    return _thread.get_id();
+}
 
 void Thread::sleep(int ms) {
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
