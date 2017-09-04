@@ -42,7 +42,6 @@ void Thread::start() {
     _thread = std::thread(std::bind(&mmThreadRun, this));
 }
 
-
 void Thread::join() {
     _thread.join();
 }

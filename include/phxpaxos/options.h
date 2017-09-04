@@ -154,6 +154,11 @@ public:
     size_t iUDPMaxSize;
 
     //optional
+    //Our default network io thread count.
+    //Default is 1.
+    int iIOThreadCount;
+
+    //optional
     //We support to run multi phxpaxos on one process.
     //One paxos group here means one independent phxpaxos. Any two phxpaxos(paxos group) only share network, no other.
     //There is no communication between any two paxos group.
