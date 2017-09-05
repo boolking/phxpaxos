@@ -1,9 +1,14 @@
 cmake_minimum_required(VERSION 3.6)
 project(phxpaxos)
 
+set (CMAKE_CXX_STANDARD 11)
 # add compiler definitions for msvs
 if(MSVC)
     add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_WARNINGS)
+elseif(UNIX)
+    set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -pthread -pipe -Wall -fPIC -Wno-unused-local-typedefs)
+    set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -pthread -Wl,--no-as-needed)
+    add_definitions(-D_FILE_OFFSET_BITS=64)
 endif()
 
 include(third_party/protobuf.cmake)
