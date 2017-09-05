@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.6)
 project(phxpaxos)
+
+# add compiler definitions for msvs
+if(MSVC)
+    add_definitions(-D_WINSOCK_DEPRECATED_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_WARNINGS)
+endif()
+
 include(third_party/protobuf.cmake)
 include(third_party/leveldb.cmake)
 include(third_party/glog.cmake)
@@ -30,7 +36,7 @@ if(WIN32)
         port/win/unistd.h
     )
     add_library(libphxpaxos_port STATIC ${PHXPAXOS_PORT_SRCS})
-    target_compile_definitions(libphxpaxos_port PRIVATE FD_SETSIZE=8192 _SCL_SECURE_NO_WARNINGS _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
+    target_compile_definitions(libphxpaxos_port PRIVATE FD_SETSIZE=8192)
     target_include_directories(libphxpaxos_port INTERFACE port port/win)
 endif(WIN32)
 
@@ -164,7 +170,7 @@ set(PROTOBUF_GENERATE_CPP_APPEND_PATH 1)
 set(PROTO_SRCS)
 set(PROTO_HDRS)
 foreach(proto_file ${PHXPAXOS_PROTO_SRCS})
-    PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${proto_file})
+    protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${proto_file})
     list(APPEND PHXPAXOS_SRCS ${PROTO_SRCS})
     list(APPEND PHXPAXOS_SRCS ${PROTO_HDRS})
 endforeach()
@@ -193,7 +199,6 @@ target_include_directories(libphxpaxos
 )
 target_link_libraries(libphxpaxos libprotobuf libleveldb)
 if(WIN32)
-    target_compile_definitions(libphxpaxos PRIVATE _WINSOCK_DEPRECATED_NO_WARNINGS _SCL_SECURE_NO_WARNINGS _CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
     target_link_libraries(libphxpaxos libphxpaxos_port ws2_32)
     set_target_properties(libphxpaxos PROPERTIES COMPILE_FLAGS "/wd4373")
 endif(WIN32)
@@ -227,3 +232,32 @@ add_executable(phxpaxos_election
     sample/phxelection/election_main.cpp
 )
 target_link_libraries(phxpaxos_election libphxpaxos libphxpaxos_plugin)
+
+add_executable(phxpaxos_ut
+    src/ut/acceptor_ut.cpp
+    src/ut/db_ut.cpp
+    src/ut/make_class.cpp
+    src/ut/make_class.h
+    src/ut/mock_class.h
+    src/ut/nodeid_ut.cpp
+    src/ut/proposer_ut.cpp
+    src/ut/timer_ut.cpp
+    src/ut/ut_main.cpp
+    src/ut/wait_lock_ut.cpp
+)
+target_link_libraries(phxpaxos_ut libgtest libphxpaxos)
+target_include_directories(phxpaxos_ut PRIVATE
+    src/utils
+    src/algorithm
+    src/checkpoint
+    src/comm
+    src/communicate
+    src/communicate/tcp
+    src/config
+    src/logstorage
+    src/master
+    src/node
+    src/sm-base
+    src/tools
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
