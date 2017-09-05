@@ -14,10 +14,10 @@ clone_script:
   - cmd: git checkout -qf %APPVEYOR_REPO_COMMIT%
 
 before_build:
-  - cmd: gyp_build.bat
+  - cmd: cmake_build.bat
 
 platform: Win32
 configuration: Release
 build:
-  project: phxpaxos.sln
+  project: build/phxpaxos.sln
   verbosity: minimal
