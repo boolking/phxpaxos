@@ -177,7 +177,7 @@ set(LIBPROTOC_SRCS
 add_library(libprotobuf-lite STATIC ${LIBPROTOBUF_LITE_SRCS})
 target_include_directories(libprotobuf-lite PUBLIC ${PROTOBUF_DIR}/src)
 if(UNIX)
-    target_compile_definitions(libprotobuf-lite HAVE_PTHREAD)
+    target_compile_definitions(libprotobuf-lite PRIVATE HAVE_PTHREAD)
 endif()
 
 add_library(libprotobuf STATIC ${LIBPROTOBUF_SRCS})
