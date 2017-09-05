@@ -13,3 +13,9 @@ script:
     - ./cmake_build.sh
 notifications:
     email: true
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:adrozdoff/cmake'
+    packages:
+      - cmake
