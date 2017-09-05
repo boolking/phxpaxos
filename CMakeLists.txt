@@ -43,6 +43,13 @@ if(WIN32)
     add_library(libphxpaxos_port STATIC ${PHXPAXOS_PORT_SRCS})
     target_compile_definitions(libphxpaxos_port PRIVATE FD_SETSIZE=8192)
     target_include_directories(libphxpaxos_port INTERFACE port port/win)
+elseif(UNIX)
+    set(PHXPAXOS_PORT_SRCS
+        port/port.h
+        port/port_unix.cpp
+    )
+    add_library(libphxpaxos_port STATIC ${PHXPAXOS_PORT_SRCS})
+    target_include_directories(libphxpaxos_port INTERFACE port)
 endif(WIN32)
 
 set(PHXPAXOS_SRCS
@@ -203,11 +210,10 @@ target_include_directories(libphxpaxos
             ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(libphxpaxos libprotobuf libleveldb)
+target_link_libraries(libphxpaxos libphxpaxos_port)
 if(WIN32)
-    target_link_libraries(libphxpaxos libphxpaxos_port ws2_32)
+    target_link_libraries(libphxpaxos ws2_32)
     set_target_properties(libphxpaxos PROPERTIES COMPILE_FLAGS "/wd4373")
-else(WIN32)
-    target_include_directories(libphxpaxos PRIVATE port)
 endif(WIN32)
 
 set(PHXPAXOS_PLUGIN_SRCS

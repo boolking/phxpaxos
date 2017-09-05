@@ -193,7 +193,11 @@ target_link_libraries(protoc libprotoc libprotobuf libprotobuf-lite)
 
 if(MSVC)
     foreach(proj libprotobuf-lite libprotobuf libprotoc protoc)
-        set_target_properties(${proj} PROPERTIES COMPILE_FLAGS "/wd4244 /wd4018 /wd4800")
+        set_target_properties(${proj} PROPERTIES COMPILE_FLAGS "/wd4244 /wd4267 /wd4018 /wd4355 /wd4800 /wd4251 /wd4996 /wd4146 /wd4305")
+    endforeach()
+elseif(UNIX)
+        foreach(proj libprotobuf-lite libprotobuf libprotoc protoc)
+        set_target_properties(${proj} PROPERTIES COMPILE_FLAGS "-Wno-sign-compare")
     endforeach()
 endif(MSVC)
 
