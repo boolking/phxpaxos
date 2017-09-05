@@ -10,6 +10,6 @@ compiler: g++
 git:
     submodules: true
 script:
-    - ./gyp_build.sh
+    - ./cmake_build.sh
 notifications:
     email: true
