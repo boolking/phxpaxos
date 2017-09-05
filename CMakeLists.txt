@@ -207,7 +207,7 @@ if(WIN32)
     target_link_libraries(libphxpaxos libphxpaxos_port ws2_32)
     set_target_properties(libphxpaxos PROPERTIES COMPILE_FLAGS "/wd4373")
 else(WIN32)
-    target_include_directories(libphxpaxos port)
+    target_include_directories(libphxpaxos PRIVATE port)
 endif(WIN32)
 
 set(PHXPAXOS_PLUGIN_SRCS
